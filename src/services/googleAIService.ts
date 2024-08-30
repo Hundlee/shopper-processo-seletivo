@@ -1,26 +1,12 @@
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import axios from "axios";
+import { bufferToBase64, downloadImage } from "../utils/imageUtils";
 
 dotenv.config();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
-function bufferToBase64(buffer: Buffer, mimeType: string) {
-    return {
-        inlineData: {
-            data: buffer.toString("base64"),
-            mimeType,
-        },
-    };
-}
-
-async function downloadImage(url: string): Promise<Buffer> {
-    const response = await axios.get(url, { responseType: "arraybuffer" });
-    return Buffer.from(response.data, "binary");
-}
-
-async function processHydrometers(imageUrl: string) {
+export async function processHydrometers(imageUrl: string) {
     const prompt = "Please just extract the readings, just the number.";
 
     try {
