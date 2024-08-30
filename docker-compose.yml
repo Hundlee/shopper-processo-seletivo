@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+    app:
+        build: .
+        ports:
+            - "8080:8080"
+        environment:
+            GEMINI_API_KEY: ${GEMINI_API_KEY}
+            DATABASE_URL: "postgresql://shopper:shopper@postgres:5432/shopper?schema=public"
+        depends_on:
+            - postgres
+        command: >
+            sh -c "sleep 20 &&
+                npx prisma migrate deploy &&
+                npx prisma generate &&
+                npm start"
+        networks:
+            - shopper_default
+    postgres:
+        image: postgres:14-alpine
+        restart: always
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_USER=shopper
+            - POSTGRES_PASSWORD=shopper
+            - POSTGRES_DB=shopper
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        networks:
+            - shopper_default
+
+volumes:
+    postgres-data:
+
+networks:
+    shopper_default:
+        driver: bridge
