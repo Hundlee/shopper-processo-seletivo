@@ -14,14 +14,13 @@ export async function processHydrometers(imageUrl: string) {
 
         const urlBase64 = bufferToBase64(buffer, "image/jpeg");
 
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const generatedContent = await model.generateContent([
             prompt,
             urlBase64,
         ]);
 
-        console.log(generatedContent.response.text());
         return generatedContent.response.text();
     } catch (error) {
         console.error("Error processing hydrometers:", error);
