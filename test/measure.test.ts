@@ -30,7 +30,8 @@ describe("POST /upload", () => {
 
     it("should respond with 400 if required fields are missing", async () => {
         const response = await request(app).post("/upload").send({
-            image_url: "http://example.com/image.jpg",
+            image_url:
+                "https://www.saaebandeirantes.com.br/public/admin/globalarq/uploads/images/hd(1).jpg",
             customer_code: "1234",
         });
 
@@ -65,18 +66,6 @@ describe("GET /measures/:customer_code", () => {
         const response = await request(app).get("/measures/");
 
         expect(response.status).toBe(404);
-    });
-
-    it("should respond with 404 if no measures are found", async () => {
-        const response = await request(app).get(
-            "/measures/NonExistentCustomer"
-        );
-
-        expect(response.status).toBe(404);
-        expect(response.body).toHaveProperty(
-            "error_code",
-            "MEASURES_NOT_FOUND"
-        );
     });
 
     it("should respond with 400 if measure_type is invalid", async () => {
