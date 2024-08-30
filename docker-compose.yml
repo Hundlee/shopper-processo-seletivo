@@ -7,7 +7,7 @@ services:
             - "8080:8080"
         environment:
             GEMINI_API_KEY: ${GEMINI_API_KEY}
-            DATABASE_URL: "postgresql://shopper:shopper@postgres:5432/shopper?schema=public"
+            DATABASE_URL: "postgresql://shopper:shopper@localhost:5432/shopper"
         depends_on:
             - postgres
         command: >
